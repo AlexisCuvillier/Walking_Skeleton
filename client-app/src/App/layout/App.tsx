@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container} from 'semantic-ui-react';
 import { Activity } from '../models/activity';
 import NavBar from './NavBar';
@@ -8,19 +8,24 @@ import agent from '../api/agent';
 import LoadingComponent from './LoadingComponent';
 
 
+
+
+
+
 function App() {
+
+ // const dispatch = useDispatch()
 
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-
+ 
   useEffect(() => {
-    agent.Activities.list().then(response => 
+   agent.Activities.list().then(response => 
     {
-     // console.log(response);
-     let activities: Activity[] = [];
+      console.log(agent);
       response.forEach(activity => {
         activity.date = activity.date.split('T')[0];
         activities.push(activity)
@@ -28,7 +33,7 @@ function App() {
       setActivities(activities);
       setLoading(false);
     })
-  }, [])
+  },[])
 
 
   function handleSelectedActivity (id : string){
