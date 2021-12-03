@@ -6,9 +6,23 @@ import ActivityDashboard from '../../features/activities/dashborard/ActivityDash
 import {v4 as uuid} from 'uuid'
 import agent from '../api/agent';
 import LoadingComponent from './LoadingComponent';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { RootStore } from '../store';
+// import { GetActivity } from '../actions/ActivityAction';
 
 
 function App() {
+
+
+  // const dispatch = useDispatch()
+  // const activityState  = useSelector((state : RootStore) => state.getActivity)
+  // const [activite, SetActivite] = useState("")
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => SetActivite(event.target.value)
+  // const handleSubmit = () => {
+  //     dispatch(GetActivity(activite))
+  // }
+
+
 
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
@@ -19,7 +33,7 @@ function App() {
   useEffect(() => {
     agent.Activities.list().then(response => 
     {
-     // console.log(response);
+     console.log(response);
      let activities: Activity[] = [];
       response.forEach(activity => {
         activity.date = activity.date.split('T')[0];
@@ -81,10 +95,19 @@ function App() {
 
   if (loading) return <LoadingComponent content='Loading APP' />
 
+
+  // console.log(activityState);
+
   return (
     <>
+      
       <NavBar openForm={handleFormOpen}/>
       <Container style = {{marginTop : '7em'}}>
+<div>
+      {/* <input type="text" onChange={handleChange} />
+      <button onClick={handleSubmit}> Search</button> */}
+</div>
+        
         <ActivityDashboard 
           activities ={activities}
           selectedActivity = {selectedActivity}

@@ -4,11 +4,14 @@ import 'semantic-ui-css/semantic.min.css';
 import './App/layout/styles.css';
 import App from './App/layout/App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import Store from './App/store';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={Store}>
+      <App />  
+  </Provider>,
   document.getElementById('root')
 );
 
