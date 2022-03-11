@@ -4,8 +4,10 @@ using API.Middleware;
 using API.Services;
 using Application.Activities;
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation.AspNetCore;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +57,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
           ValidateAudience = false
       };
   });
+builder.Services.AddAuthorization(opt => 
+{
+    opt.AddPolicy("IsActivityHost", policy =>
+    {
+        policy.Requirements.Add(new IsHostRequirement());
+    });
+});
+builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
 builder.Services.AddScoped<TokenService>();
 
 /// 
@@ -77,6 +87,8 @@ builder.Services.AddCors(opt =>
 builder.Services.AddMediatR(typeof(List.Handler).Assembly);
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
 
 var app = builder.Build();
